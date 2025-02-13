@@ -1,0 +1,11 @@
+8/2/2024,Six Flags,42.50,Dining,Credit
+8/2/2024,Six Flags,24.99,Shopping,Cash
+8/2/2024,Six Flags,30.00,Leisure,Cash
+8/2/2024,Six Flags,67.92,Dining,Credit
+8/5/2024,Khol's,52.31,Shopping,Credit
+8/6/2024,Electric Co,114.11,Utilities,Check
+8/8/2024,Water Co,48.03,Utilities,Check
+8/13/2024,Gift for Sister,23.99,Chopping,Mobile
+9/14/2024,Walmart,14.54,Shopping,Cash
+9/16/2024,Dick's Sporting Goods,65.45,Leisure,Debit
+9/16/2024,Wendy's,12.55,Dining,Mobile
