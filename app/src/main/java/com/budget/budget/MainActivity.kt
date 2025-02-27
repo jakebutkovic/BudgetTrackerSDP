@@ -43,6 +43,56 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+data class Purchase(var dateM: Int, var dateD: Int, var dateY: Int, var name: String, var amount: Float, var category: String, var transaction: String)
+
+fun logPurchase(date: String, name: String, amount: Float, category: String, transaction: String, file: File) {
+    var purchase = "[$date,$name,$amount,$category,$transaction]"
+    file.appendText(purchase + "\n")
+}
+
+fun getPurchaseHistory(file: File): MutableList<Purchase> {
+    var purchases = mutableListOf<Purchase>()
+    var line = 0
+    file.forEachLine { index ->
+        var pur = Purchase(0, 0, 0, "", ("0").toFloat(), "", "")
+
+        // Date
+        var comma = index.indexOf(',')
+        var date = index.substring(1, comma)
+        pur.dateM = date.substring(0, date.indexOf('/')).toInt()
+        var dateSlash = date.indexOf('/') + 1
+        pur.dateD = date.substring(dateSlash, date.indexOf('/',dateSlash)).toInt()
+        dateSlash = date.indexOf('/', dateSlash) + 1
+        pur.dateY = date.substring(dateSlash, date.length).toInt()
+        var nextItem = comma + 1
+
+        // Name
+        comma = index.indexOf(',',nextItem)
+        pur.name = index.substring(nextItem,comma)
+        nextItem = comma + 1
+
+        // Amount
+        comma = index.indexOf(',',nextItem)
+        pur.amount = index.substring(nextItem,comma).toFloat()
+        nextItem = comma + 1
+
+        // Category & Transaction
+        comma = index.indexOf(',',nextItem)
+        pur.category = index.substring(nextItem,comma)
+        pur.transaction = index.substring(comma+1,index.indexOf(']',comma+1))
+
+        purchases.add(pur)
+    }
+
+    return purchases
+}
+
+fun readPurchases(purchases: MutableList<Purchase>) {
+    for (purchase in purchases) {
+        println(purchase)
+    }
+}
+
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
