@@ -2,6 +2,11 @@ package com.budget.budget
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
+
+
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.budget.budget.ui.theme.BudgetTheme
 import java.io.File
 
+
+/*
 val filename = "Data.txt"
 val file = File(filename)
 
@@ -49,7 +56,7 @@ class MainActivity : ComponentActivity() {
 
 data class Purchase(var dateM: Int, var dateD: Int, var dateY: Int, var name: String, var amount: Float, var category: String, var transaction: String)
 
-fun logPurchase(date: String, name: String, amount: Float, category: String, transaction: String, file: File) {
+fun logPurchases(date: String, name: String, amount: Float, category: String, transaction: String, file: File) {
     var purchase = "[$date,$name,$amount,$category,$transaction]"
     file.appendText(purchase + "\n")
 }
@@ -110,5 +117,37 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     BudgetTheme {
         Greeting("Android")
+    }
+}
+*/
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.layout)
+
+        // Find buttons by their IDs
+        val btnLogSection = findViewById<Button>(R.id.btnLogSection)
+        val btnGraphs = findViewById<Button>(R.id.btnGraphs)
+
+        // Set onClick listeners
+        btnLogSection.setOnClickListener {
+            openLogSection()
+        }
+
+        btnGraphs.setOnClickListener {
+            openGraphs()
+        }
+
+    }
+
+    fun openLogSection() {
+        val intent = Intent(this, LogPurchases::class.java)
+        startActivity(intent)
+    }
+
+    fun openGraphs() {
+        val intent = Intent(this, ViewGraphs::class.java)
+        startActivity(intent)
     }
 }
