@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">Budget</string>
+    <string name="app_name">Budget App Alpha</string>
+
+    <string-array name="PurchaseCategory">
+        <item>Groceries</item>
+        <item>Shopping</item>
+        <item>Dining</item>
+        <item>Leisure</item>
+        <item>Utilities</item>
+        <item>Miscellaneous</item>
+    </string-array>
+
+    <string-array name="TransactionType">
+        <item>Cash</item>
+        <item>Credit</item>
+        <item>Debit</item>
+        <item>Check</item>
+        <item>Mobile</item>
+    </string-array>
 </resources>
