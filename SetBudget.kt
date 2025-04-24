@@ -1,24 +1,42 @@
-package com.example.myapplication
+package com.budget.budget.ui.theme
 
 import java.io.File
 
-fun main() {
-    print("Enter your budget: ")
-    var input = readLine()?.trim() // read user input as a string
+fun saveBudget(budget: Double, label: String, filePath: String) {
+    val file = File(filePath)
 
-    var budget = input?.toIntOrNull()
-    if (input != null && input.isNotBlank()) {
-        var filename = "budget.txt"
-        var file = File(filename)
-
-        try {
-            file.writeText(budget.toString()) // write the user's input to the file
-            println("Number stored successfully in ${file.absolutePath}")
-        } catch (e: Exception) {
-            println("Error writing file: ${e.message}")
+    // Read existing budgets
+    val budgets = mutableMapOf<String, Double>()
+    if (file.exists()) {
+        file.readLines().forEach { line ->
+            val data = line.split(":")
+            if (data.size == 2) {
+                val amount = data[1].toDoubleOrNull()
+                if (amount != null) {
+                    budgets[data[0]] = amount
+                }
+            }
         }
-
-    }  else {
-        println("Invalid input. Please enter a valid number.")
     }
+
+    // Update or insert
+    budgets[label] = budget
+
+    // Write all budgets back to the file
+    file.writeText(budgets.entries.joinToString("\n") { "${it.key}:${it.value}" })
+
+    println("Budget '$label' saved successfully at: $filePath")
+}
+
+fun loadBudgets(filePath: String): Map<String, Double> {
+    val file = File(filePath)
+    if (!file.exists()) return emptyMap()
+
+    return file.readLines().mapNotNull { line ->
+        val data = line.split(":")
+        if (data.size == 2) {
+            val amount = data[1].toDoubleOrNull()
+            if (amount != null) data[0] to amount else null
+        } else null
+    }.toMap()
 }
