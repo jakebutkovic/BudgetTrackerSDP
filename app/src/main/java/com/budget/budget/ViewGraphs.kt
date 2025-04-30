@@ -1,20 +1,24 @@
 package com.budget.budget
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class ViewGraphs : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,84 +26,109 @@ class ViewGraphs : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_view_graphs)
 
-        // Adjust for edge-to-edge display
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Load purchase data from file
-        val purchases = loadPurchases()
+        val purchases = loadFilePurchases()
 
-        // Set up Bar Chart
+        // Set up Bar Chart (grouped by category)
         val barChart = findViewById<BarChart>(R.id.barChart)
-        val (barEntries, dateLabels) = prepareBarChartData(purchases)
-        val barDataSet = BarDataSet(barEntries, "Spending by Date")
+        val (barEntries, barLabels) = prepareBarChartData(purchases)
+        val barDataSet = BarDataSet(barEntries, "Spending by Category")
+        barDataSet.colors = getColorList()
         val barData = BarData(barDataSet)
         barChart.data = barData
+        barChart.setFitBars(true)
+        barChart.description.isEnabled = false
 
-        // Format X-axis with date labels
         val xAxis: XAxis = barChart.xAxis
-        xAxis.valueFormatter = IndexAxisValueFormatter(dateLabels)
+        xAxis.valueFormatter = IndexAxisValueFormatter(barLabels)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
+        xAxis.labelRotationAngle = -45f
+        barChart.invalidate()
 
-        barChart.invalidate() // refresh the chart
-
-        // Set up Pie Chart
+        // Set up Pie Chart (grouped by category)
         val pieChart = findViewById<PieChart>(R.id.pieChart)
         val pieEntries = preparePieChartData(purchases)
         val pieDataSet = PieDataSet(pieEntries, "Spending by Category")
+        pieDataSet.colors = getColorList()
+        pieDataSet.setDrawValues(false) // Remove value labels from slices
         val pieData = PieData(pieDataSet)
         pieChart.data = pieData
-        pieChart.invalidate() // refresh the chart
+        pieChart.setUsePercentValues(false)
+        pieChart.setEntryLabelColor(Color.TRANSPARENT) // Hide labels on chart
+        pieChart.description.isEnabled = false
+        pieChart.legend.isWordWrapEnabled = true
+        pieChart.invalidate()
     }
 
-    // Function to load and parse purchase log data from assets
-    private fun loadPurchases(): List<PurchaseData> {
+    private fun loadFilePurchases(): List<PurchaseData> {
         val purchases = mutableListOf<PurchaseData>()
-        val inputStream = assets.open("purchase_log.txt")
-        inputStream.bufferedReader().forEachLine { line ->
-            val trimmedLine = line.trim().removePrefix("[").removeSuffix("]")
-            val tokens = trimmedLine.split(",")
-            if (tokens.size == 5) {
-                val purchase = PurchaseData(
-                    date = tokens[0].trim(),
-                    vendor = tokens[1].trim(),
-                    amount = tokens[2].trim().toDoubleOrNull() ?: 0.0,
-                    category = tokens[3].trim(),
-                    paymentType = tokens[4].trim()
-                )
-                purchases.add(purchase)
+        try {
+            val inputStream = assets.open("data.txt")
+            val reader = BufferedReader(InputStreamReader(inputStream))
+            reader.useLines { lines ->
+                lines.forEach { line ->
+                    val trimmedLine = line.trim().removePrefix("[").removeSuffix("]")
+                    val tokens = trimmedLine.split(",")
+                    if (tokens.size == 5) {
+                        val purchase = PurchaseData(
+                            date = tokens[0].trim(),
+                            vendor = tokens[1].trim(),
+                            amount = tokens[2].trim().toDoubleOrNull() ?: 0.0,
+                            category = tokens[3].trim(),
+                            paymentType = tokens[4].trim()
+                        )
+                        purchases.add(purchase)
+                    }
+                }
             }
+        } catch (e: Exception) {
+            Log.e("ERROR", "Error loading 'data.txt': ${e.message}")
         }
         return purchases
     }
 
-    // Prepare Bar Chart entries (grouping by date)
     private fun prepareBarChartData(purchases: List<PurchaseData>): Pair<List<BarEntry>, List<String>> {
-        val dateTotals = purchases.groupBy { it.date }.mapValues { entry ->
-            entry.value.sumOf { it.amount }
-        }
-        val sortedDates = dateTotals.keys.sorted()
+        val categoryTotals = purchases.groupBy { it.category }
+            .mapValues { it.value.sumOf { it.amount } }
+            .toList()
+            .sortedByDescending { it.second }
+
         val entries = ArrayList<BarEntry>()
-        for ((index, date) in sortedDates.withIndex()) {
-            val total = dateTotals[date] ?: 0.0
-            entries.add(BarEntry(index.toFloat(), total.toFloat()))
+        val labels = ArrayList<String>()
+        for ((index, pair) in categoryTotals.withIndex()) {
+            entries.add(BarEntry(index.toFloat(), pair.second.toFloat()))
+            labels.add(pair.first)
         }
-        return Pair(entries, sortedDates)
+        return Pair(entries, labels)
     }
 
-    // Prepare Pie Chart entries (grouping by category)
     private fun preparePieChartData(purchases: List<PurchaseData>): List<PieEntry> {
-        val categoryTotals = purchases.groupBy { it.category }.mapValues { entry ->
-            entry.value.sumOf { it.amount }
-        }
-        val entries = ArrayList<PieEntry>()
-        for ((category, total) in categoryTotals) {
-            entries.add(PieEntry(total.toFloat(), category))
-        }
-        return entries
+        val categoryTotals = purchases.groupBy { it.category }
+            .mapValues { it.value.sumOf { it.amount } }
+            .toList()
+            .sortedByDescending { it.second }
+
+        return categoryTotals.map { PieEntry(it.second.toFloat(), it.first) }
+    }
+
+    private fun getColorList(): List<Int> {
+        return listOf(
+            Color.parseColor("#FF6384"), // red-pink
+            Color.parseColor("#36A2EB"), // blue
+            Color.parseColor("#FFCE56"), // yellow
+            Color.parseColor("#4BC0C0"), // teal
+            Color.parseColor("#9966FF"), // purple
+            Color.parseColor("#FF9F40"), // orange
+            Color.parseColor("#C9CBCF"), // grey
+            Color.parseColor("#8B0000"), // dark red
+            Color.parseColor("#00FA9A"), // medium spring green
+            Color.parseColor("#DAA520")  // goldenrod
+        )
     }
 }

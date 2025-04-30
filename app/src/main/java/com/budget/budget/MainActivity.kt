@@ -122,32 +122,24 @@ fun GreetingPreview() {
 */
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout)
-
         // Find buttons by their IDs
-        val btnLogSection = findViewById<Button>(R.id.btnLogSection)
-        val btnGraphs = findViewById<Button>(R.id.btnGraphs)
+        val buttonLogSection = findViewById<Button>(R.id.btnLogSection)
+        val buttonViewGraphs = findViewById<Button>(R.id.btnViewGraphs)
 
         // Set onClick listeners
-        btnLogSection.setOnClickListener {
-            openLogSection()
+        buttonLogSection.setOnClickListener {
+            val intent = Intent(this, LogPurchases::class.java)
+            startActivity(intent)
         }
 
-        btnGraphs.setOnClickListener {
-            openGraphs()
+        buttonViewGraphs.setOnClickListener {
+            val intent = Intent(this, ViewGraphs::class.java)
+            startActivity(intent)
         }
 
-    }
-
-    fun openLogSection() {
-        val intent = Intent(this, LogPurchases::class.java)
-        startActivity(intent)
-    }
-
-    fun openGraphs() {
-        val intent = Intent(this, ViewGraphs::class.java)
-        startActivity(intent)
     }
 }

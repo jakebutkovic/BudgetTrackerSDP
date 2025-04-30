@@ -23,22 +23,23 @@
         android:id="@+id/btnLogSection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log Purchase"
-        android:onClick="openLogSection"
-        app:layout_constraintTop_toBottomOf="@id/titleText"
+        android:text="Log Purchaces"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="100dp"
+        />
 
     <Button
-        android:id="@+id/btnGraphs"
+        android:id="@+id/btnViewGraphs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View Graphs"
-        android:onClick="openGraphs"
-        app:layout_constraintTop_toBottomOf="@id/btnLogSection"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="175dp"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,8 +10,8 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
 
-        <!-- Main activity -->
-        <activity android:name=".MainActivity"
+        <!-- ViewGraphs is now the main activity -->
+        <activity android:name=".ViewGraphs"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,9 +19,11 @@
             </intent-filter>
         </activity>
 
-        <!-- Other activities -->
+        <!-- MainActivity no longer has the LAUNCHER filter, so it won't open by default -->
+        <activity android:name=".MainActivity" android:exported="false"/>
 
-        <activity android:name=".ViewGraphs" android:exported="false" />
+        <!-- Other activities -->
+        <activity android:name=".LogPurchases" android:exported="false"/>
 
     </application>
 
