@@ -131,4 +131,12 @@ class ViewGraphs : AppCompatActivity() {
             Color.parseColor("#DAA520")  // goldenrod
         )
     }
+
+    data class PurchaseData(
+        val date: String,
+        val vendor: String,
+        val amount: Double,
+        val category: String,
+        val paymentType: String
+    )
 }
