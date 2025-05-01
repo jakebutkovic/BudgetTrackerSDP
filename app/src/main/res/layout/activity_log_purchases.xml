@@ -1,21 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editTextBudget"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your budget"
-        android:inputType="numberDecimal" />
+        android:layout_height="match_parent"
+        android:background="#9811FF11">
 
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save Budget"
-        android:layout_marginTop="16dp" />
+        <Button
+            android:id="@+id/btn_confirmPurchase"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="81dp"
+            android:layout_marginBottom="100dp"
+            android:background="@drawable/mainbutton"
+            android:text="Log Purchase"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categorySpinner" />
+
+        <EditText
+            android:id="@+id/nameText"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="105dp"
+            android:layout_marginTop="-3dp"
+            android:layout_marginEnd="105dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
+
+        <EditText
+            android:id="@+id/purchaseTitle"
+            android:layout_width="412dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:text="Log Your Purchase"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_logReturn"
+            android:layout_width="125dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/homebutton"
+            android:text="Home"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/monthText"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="-3dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/monthLabel" />
+
+        <EditText
+            android:id="@+id/dayText"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-3dp"
+            android:layout_marginEnd="21dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/yearText"
+            app:layout_constraintStart_toEndOf="@+id/monthText"
+            app:layout_constraintTop_toBottomOf="@+id/dayLabel" />
+
+        <EditText
+            android:id="@+id/yearText"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="-3dp"
+            android:layout_marginEnd="35dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dayLabel" />
+
+        <EditText
+            android:id="@+id/monthLabel"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:text="Month"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameText" />
+
+        <EditText
+            android:id="@+id/dayLabel"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="21dp"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:text="Day"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/yearText"
+            app:layout_constraintStart_toEndOf="@+id/monthText"
+            app:layout_constraintTop_toBottomOf="@+id/nameText" />
+
+        <EditText
+            android:id="@+id/yearLabel"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="35dp"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:text="Year"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameText" />
+
+        <EditText
+            android:id="@+id/priceText"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="-3dp"
+            android:layout_marginEnd="131dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/priceLabel" />
+
+        <EditText
+            android:id="@+id/priceLabel"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="131dp"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:text="Price"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/monthText" />
+
+        <EditText
+            android:id="@+id/nameLabel"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="105dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="105dp"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:text="Purchase Name"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/purchaseTitle" />
+
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="-3dp"
+            android:backgroundTintMode="src_atop"
+            android:textAlignment="center"
+            app:barrierMargin="3sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryLabel" />
+
+        <EditText
+            android:id="@+id/categoryLabel"
+            android:layout_width="175dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:text="Category"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/priceText" />
+
+        <EditText
+            android:id="@+id/transactionLabel"
+            android:layout_width="175dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:text="Transaction"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/priceText" />
+
+        <Spinner
+            android:id="@+id/transactionSpinner"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="-3dp"
+            android:layout_marginEnd="16dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/transactionLabel" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.budget.budget
+package com.example.spendle
 
 import org.junit.Test
 

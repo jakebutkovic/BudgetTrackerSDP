@@ -15,12 +15,10 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        // Needed for Github libs
         mavenCentral()
-        maven{ setUrl("https://jitpack.io")}
     }
 }
 
-rootProject.name = "Budget"
+rootProject.name = "Spendle"
 include(":app")
  

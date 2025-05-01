@@ -1,4 +1,4 @@
-package com.budget.budget.ui.theme
+package com.example.spendle.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

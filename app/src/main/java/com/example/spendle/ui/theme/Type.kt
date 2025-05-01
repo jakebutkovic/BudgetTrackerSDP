@@ -1,4 +1,4 @@
-package com.budget.budget.ui.theme
+package com.example.spendle.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
