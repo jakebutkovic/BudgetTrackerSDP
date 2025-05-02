@@ -98,6 +98,7 @@ class LogPurchase : ComponentActivity() {
             logPurchase(m, d, y, name, price, category, transaction)
         }
 
+        // Set-Up Home Button
         returnButton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }

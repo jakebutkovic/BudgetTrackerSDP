@@ -1,12 +1,15 @@
 package com.example.spendle
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.io.File
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.XAxis
@@ -17,8 +20,6 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
 class ViewGraphs : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,12 +27,20 @@ class ViewGraphs : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_view_graphs)
 
+        // Set-Up Home Button
+        val button = findViewById<Button>(R.id.button)
+        button.translationX = 24f
+        button.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
+        // Load Purchases
         val purchases = loadFilePurchases()
 
         // Set up Bar Chart (grouped by category)
@@ -68,28 +77,28 @@ class ViewGraphs : AppCompatActivity() {
 
     private fun loadFilePurchases(): List<PurchaseData> {
         val purchases = mutableListOf<PurchaseData>()
-        try {
-            val inputStream = assets.open("data.txt")
-            val reader = BufferedReader(InputStreamReader(inputStream))
-            reader.useLines { lines ->
-                lines.forEach { line ->
-                    val trimmedLine = line.trim().removePrefix("[").removeSuffix("]")
-                    val tokens = trimmedLine.split(",")
-                    if (tokens.size == 5) {
-                        val purchase = PurchaseData(
-                            date = tokens[0].trim(),
-                            vendor = tokens[1].trim(),
-                            amount = tokens[2].trim().toDoubleOrNull() ?: 0.0,
-                            category = tokens[3].trim(),
-                            paymentType = tokens[4].trim()
-                        )
-                        purchases.add(purchase)
-                    }
-                }
+        val file = File(filesDir.absolutePath + "/purchaseData.txt")
+        if (file.exists()) {
+            file.forEachLine {
+                var line = it.trim().removePrefix("[").removeSuffix("]")
+                var purchase = PurchaseData("", "", 0.0, "", "")
+                purchase.date = line.substring(0, line.indexOf(','))
+                var comma = line.indexOf(',') + 1
+                purchase.vendor = line.substring(comma, line.indexOf(',', comma))
+                comma = line.indexOf(',', comma) + 1
+                purchase.amount = line.substring(comma, line.indexOf(',', comma)).toDouble()
+                comma = line.indexOf(',', comma) + 1
+                purchase.category = line.substring(comma, line.indexOf(',', comma))
+                comma = line.indexOf(',', comma) + 1
+                purchase.paymentType = line.substring(comma, line.length)
+
+                purchases.add(purchase)
             }
-        } catch (e: Exception) {
-            Log.e("ERROR", "Error loading 'data.txt': ${e.message}")
         }
+        else {
+            Log.e("ERROR", "Cannot Load purchaseData.txt")
+        }
+
         return purchases
     }
 
@@ -131,4 +140,12 @@ class ViewGraphs : AppCompatActivity() {
             Color.parseColor("#DAA520")  // goldenrod
         )
     }
+
+    data class PurchaseData(
+        var date: String,
+        var vendor: String,
+        var amount: Double,
+        var category: String,
+        var paymentType: String
+    )
 }

@@ -39,8 +39,8 @@
         </activity>
         <activity
             android:name=".ViewGraphs"
-            android:exported="false"
-            android:theme="@style/Theme.Spendle">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         </activity>
     </application>
 

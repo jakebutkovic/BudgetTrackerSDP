@@ -23,12 +23,6 @@ class Budget : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_budget)
-        // val buttonNext = findViewById<Button>(R.id.buttonNext) //sets up next button. when clicked starts ViewBudgetActivity
-        //buttonNext.setOnClickListener {
-        //   val intent = Intent(this, ViewBudgetActivity::class.java)
-        //    startActivity(intent)
-        //   overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        // }
 
         val buttonHome = findViewById<Button>(R.id.buttonHome)
         val editTextBudget = findViewById<EditText>(R.id.editTextBudget)
@@ -82,6 +76,7 @@ class Budget : ComponentActivity() {
             }
         }
 
+        // Set-Up Home Button
         buttonHome.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }

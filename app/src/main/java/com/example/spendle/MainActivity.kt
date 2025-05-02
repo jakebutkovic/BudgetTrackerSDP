@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         }
 
         graphsButton.setOnClickListener {
-            //startActivity(Intent(this, ViewGraphs::class.java))
+            startActivity(Intent(this, ViewGraphs::class.java))
         }
     }
 }
